@@ -51,7 +51,7 @@ public class GettingStartedApplication {
             final var resultSet = statement.executeQuery("SELECT tick FROM table_timestamp_and_random_string");
             final var output = new ArrayList<>();
             while (resultSet.next()) {
-                output.add("Read from DB: " + resultSet.getRandomString("random_string"));
+                output.add("Read from DB: " + resultSet.getString("random_string"));
             }
 
             model.put("records", output);
