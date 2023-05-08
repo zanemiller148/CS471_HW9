@@ -29,16 +29,14 @@ public class GettingStartedApplication {
     @GetMapping("/database")
     String database(Map<String, Object> model) {
         try (Connection connection = dataSource.getConnection()) {
-            final var Statement statement = connection.createStatement();
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS table_timestamp_and_random_string (tick timestamp, random_string varchar(30))");
-            statement.executeUpdate("INSERT INTO table_timestamp_and_random_string VALUES (now(), '" + getRandomString() + "')");
+            final var statement = connection.createStatement();
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
+            statement.executeUpdate("INSERT INTO ticks VALUES (now())");
 
-
-
-            final var resultSet = statement.executeQuery("SELECT timestamp FROM table_timestamp_and_random_string");
+            final var resultSet = statement.executeQuery("SELECT tick FROM ticks");
             final var output = new ArrayList<>();
             while (resultSet.next()) {
-                output.add("Read from DB: " + resultSet.getTimestamp("random_string"));
+                output.add("Read from DB: " + resultSet.getTimestamp("tick"));
             }
 
             model.put("records", output);
